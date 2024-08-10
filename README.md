@@ -41,4 +41,5 @@ This project demonstrates a significant advancement in blockchain technology for
 
 ## Runtime Demonstration
 
-![image-20240810165227178](C:\Users\11617\AppData\Roaming\Typora\typora-user-images\image-20240810165227178.png)
+![image-20240810165227178](img/image-20240810165227178.png)
+
