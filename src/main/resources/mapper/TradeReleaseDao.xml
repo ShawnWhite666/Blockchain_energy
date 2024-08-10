@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.trade.release.dao.TradeReleaseDao">
+    <insert id="insertNewRelease">
+        insert
+        into release_info(release_id, user_id, input_type_id, trade_type, total_elec, start_time, end_time, price,
+                          release_time, date)
+        values (#{release_id}, #{user_id}, #{input_type_id}, #{trade_type}, #{total_elec}, #{start_time}, #{end_time},
+                #{price}, #{release_time}, #{date})
+    </insert>
+    <insert id="insertNewTimeSlot">
+        insert
+        into time_slot_info(time_slot, release_id, elec_value, elec_upper, elec_lower)
+        values (#{time_slot}, #{release_id}, #{elec_value}, #{elec_upper}, #{elec_lower})
+    </insert>
+    <select id="getReleaseDeal" resultType="com.blockchainenergy.trade.release.ReleaseInfo">
+        SELECT *
+        FROM
+        release_info
+        <where>
+            <if test="trade_type != null and trade_type != -1">
+                trade_type = #{trade_type}
+            </if>
+            <if test="release_state_id != null and release_state_id != -1">
+                AND release_state_id = #{release_state_id}
+            </if>
+        </where>
+        order by release_time desc
+    </select>
+    <delete id="deleteReleaseInfoByReleaseId">
+        delete
+        from release_info
+        where release_id = #{release_id}
+    </delete>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.security.user.dao.UserDao">
+    <select id="findUserListByCondition" resultType="com.blockchainenergy.security.user.User">
+        select
+        id,
+        account_number,
+        password,
+        real_name,
+        person_id_number,
+        contact_number,
+        company_name,
+        company_address,
+        gender,
+        age,
+        location,
+        contact_email,
+        personal_description,
+        created_at,
+        updated_at
+        from users
+
+        <where>
+
+            <if test="account_number != null and account_number !=''">
+                address like concat('%',#{account_number},'%')
+            </if>
+            <if test="password != null and password !=''">
+                address like concat('%',#{address},'%')
+            </if>
+            <if test="real_name != null and real_name !=''">
+                real_name like concat('%',#{real_name},'%')
+            </if>
+            <if test="person_id_number != null and person_id_number !=''">
+                person_id_number like concat('%',#{person_id_number},'%')
+            </if>
+            <if test="contact_number != null and contact_number !=''">
+                contact_number like concat('%',#{contact_number},'%')
+            </if>
+            <if test="company_name != null and company_name !=''">
+                company_name like concat('%',#{company_name},'%')
+            </if>
+            <if test="company_address != null and company_address !=''">
+                company_address like concat('%',#{company_address},'%')
+            </if>
+            <if test="location != null and location !=''">
+                location like concat('%',#{location},'%')
+            </if>
+            <if test="contact_email != null and contact_email !=''">
+                contact_email like concat('%',#{contact_email},'%')
+            </if>
+            <if test="personal_description != null and personal_description !=''">
+                personal_description like concat('%',#{personal_description},'%')
+            </if>
+
+        </where>
+    </select>
+</mapper>

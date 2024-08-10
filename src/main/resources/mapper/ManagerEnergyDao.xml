@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.manager.energy.dao.ManagerEnergyDao">
+    <insert id="createEnergy">
+        insert into energy(energy_name,
+                           energy_unit,
+                           energy_acc,
+                           publisher)
+        values (#{energy_name},
+                #{energy_unit},
+                #{energy_acc},
+                #{publisher})
+    </insert>
+
+    <select id="getAllEnergyInfo" resultType="com.blockchainenergy.manager.energy.EnergyInfoVO">
+        select *
+        from energy
+    </select>
+
+    <delete id="deleteEnergy">
+        delete
+        from energy
+        where energy_id = #{energy_id}
+    </delete>
+</mapper>

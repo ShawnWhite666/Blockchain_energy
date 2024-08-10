@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.trade.elecMeter.dao.ElecMeterDao">
+    <select id="getElecMeterIdByUserId" resultType="String">
+        SELECT elec_meter_id
+        FROM user_info
+        where user_id = #{user_id}
+    </select>
+    <select id="getElecMeterLogByMeterId" resultType="com.blockchainenergy.trade.elecMeter.ElecMeterLog">
+        select log_id, EF, ER, V, A
+        from electricity_meter_log
+        where elec_meter_id = #{elec_meter_id}
+        order by elec_meter_id
+                desc limit 60
+    </select>
+    <select id="getAllElecMeter" resultType="com.blockchainenergy.trade.elecMeter.ElecMeter">
+        select *
+        from electricity_meter_info
+    </select>
+</mapper>

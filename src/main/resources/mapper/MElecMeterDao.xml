@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.manager.elecMeter.dao.MElecMeterDao">
+    <delete id="delElecMeter">
+        DELETE
+        FROM electricity_meter_info
+        where elec_meter_id = #{elec_meter_id}
+    </delete>
+    <select id="getAllElecMeter" resultType="com.blockchainenergy.common.redis.info.ElecMeterInfo">
+        SELECT *
+        FROM electricity_meter_info
+    </select>
+</mapper>

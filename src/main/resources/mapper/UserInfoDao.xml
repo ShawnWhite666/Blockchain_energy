@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.info.user.dao.UserInfoDao">
+    <select id="getReleaseInfoByUserId" resultType="com.blockchainenergy.info.user.dao.UserReleaseEntity">
+        select release_id,
+               total_elec,
+               start_time,
+               end_time,
+               release_time,
+               price, date, trade_type, release_state_id
+        from release_info
+        where user_id = #{user_id}
+        order by release_time desc
+    </select>
+
+    <select id="getTimeSlotInfoByReleaseId" resultType="com.blockchainenergy.info.user.dao.UserTimeSlotInfoEntity">
+        select *
+        from time_slot_info
+        where release_id = #{release_id}
+    </select>
+
+    <select id="getTradeRecordByBuyerId" resultType="com.blockchainenergy.info.user.dao.UserTradeRecordInfoEntity">
+        select *
+        from trade_record
+        where buyer = #{buyer}
+        order by match_time desc
+    </select>
+
+    <select id="getTradeRecordBySellerId" resultType="com.blockchainenergy.info.user.dao.UserTradeRecordInfoEntity">
+        select *
+        from trade_record,
+             trade_state
+        where seller = #{seller}
+          and trade_record.trade_state_id = trade_state.trade_state_id
+        order by trade_time desc
+    </select>
+
+    <select id="getUserInfoByUserId" resultType="com.blockchainenergy.info.user.dao.UserInfoEntity">
+        select user_info.user_id,
+               name,
+               sex,
+               age,
+               address,
+               work_unit,
+               email,
+               phone_number,
+               id_number,
+               elec_meter_id,
+               user_desc,
+               balance,
+               credit_point
+        from user_info,
+             user
+        where user.user_id = #{user_id}
+          and user.user_id = user_info.user_id
+    </select>
+    <select id="getUserBalance" resultType="java.lang.Double">
+        select balance
+        from user
+        where user_id = #{user_id}
+    </select>
+
+    <update id="updateUserInfo">
+        update user_info
+        set address       = #{address},
+            work_unit     = #{work_unit},
+            phone_number  = #{phone_number},
+            email         = #{email},
+            user_desc     = #{user_desc},
+            elec_meter_id = #{elec_meter_id}
+        where user_id = #{user_id}
+    </update>
+</mapper>

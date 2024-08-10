@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.mqtt.server.dao.MqttDao">
+    <insert id="insertElectricityMeterLog">
+        insert into electricity_meter_log(elec_meter_id, EA, ER, EF, V, A, PIA, PIR, PI, PF, time)
+        values (#{elec_meter_id}, #{EA}, #{ER}, #{EF}, #{V}, #{A}, #{PIA}, #{PIR}, #{PI}, #{PF}, #{time});
+    </insert>
+    <update id="updateElectricityMeterInfoPersonal">
+        update electricity_meter_info
+        set EA   = #{EA},
+            ER   = #{ER},
+            EF   = #{EF},
+            V    = #{V},
+            A    = #{A},
+            PIA  = #{PIA},
+            PIR  = #{PIR},
+            PI   = #{PI},
+            PF   = #{PF},
+            time = #{time}
+        where elec_meter_id = #{elec_meter_id};
+    </update>
+</mapper>

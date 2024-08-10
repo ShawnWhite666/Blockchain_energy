@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.info.market.dao.InfoMarketDao">
+    <select id="getTradingVolumesByTime" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM trade_record
+        where time_slot = #{time_slot}
+          and to_days(trade_time) = to_days(now());
+    </select>
+    <select id="getMaxPriceByTime" resultType="java.lang.Double">
+        SELECT max(price)
+        FROM trade_record
+        where time_slot = #{time_slot}
+          and to_days(trade_time) = to_days(now());
+    </select>
+    <select id="getMinPriceByTime" resultType="java.lang.Double">
+        SELECT min(price)
+        FROM trade_record
+        where time_slot = #{time_slot}
+          and to_days(trade_time) = to_days(now());
+    </select>
+    <select id="getAverageByTime" resultType="java.lang.Double">
+        SELECT avg(price)
+        FROM trade_record
+        where time_slot = #{time_slot}
+          and to_days(trade_time) = to_days(now());
+    </select>
+    <select id="getTotalTradeNum" resultType="java.lang.Integer">
+        select count(*)
+        from release_info
+    </select>
+    <select id="getMatchTradeNum" resultType="java.lang.Integer">
+        select count(*)
+        from trade_record
+    </select>
+    <select id="getTradeAmount" resultType="java.lang.Long">
+        select sum(price * total_elec)
+        from release_info
+    </select>
+    <select id="getUserNum" resultType="java.lang.Integer">
+        select count(*)
+        from user
+    </select>
+</mapper>

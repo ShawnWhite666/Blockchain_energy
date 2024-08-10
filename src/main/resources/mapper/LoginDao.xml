@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.blockchainenergy.security.login.dao.LoginDao">
+    <select id="countPublicKey" resultType="integer">
+        select count(user_id)
+        from user
+        where user_id = #{public_key}
+    </select>
+    <select id="getName" resultType="string">
+        select name
+        from user_info
+        where user_id = #{public_key}
+    </select>
+</mapper>

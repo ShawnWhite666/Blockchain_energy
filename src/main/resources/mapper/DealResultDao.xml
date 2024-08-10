@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.trade.dealResult.dao.DealResultDao">
+
+    <select id="getTraderInfo" resultType="com.blockchainenergy.trade.dealResult.Trader">
+        select *
+        from user
+        where user_id = #{user_id}
+    </select>
+
+    <select id="getMatchedTrade" resultType="com.blockchainenergy.trade.dealResult.TradeInfo">
+        select *
+        from trade_record
+        where trade_state_id = 1
+            and (
+                  (trade_time = curdate() and time_slot &lt; HOUR (now()))
+           or trade_time &lt; curdate()
+            )
+        order by match_time
+    </select>
+
+    <update id="updateBuyer">
+        update user
+        set buy_number   = buy_number + 1,
+            credit_point = #{newCreditPoint},
+            balance      = balance + #{buyerIncome}
+        where user_id = #{buyerUser_id}
+    </update>
+
+    <update id="updateSeller">
+        update user
+        set sell_number  = sell_number + 1,
+            credit_point = #{newCreditPoint},
+            balance      = balance + #{sellerIncome}
+        where user_id = #{sellerUserId}
+    </update>
+
+    <update id="updatePower">
+        update user
+        set balance = balance + #{powerIncome}
+        where user_id = #{electricGridId};
+    </update>
+
+    <update id="updateTradeRecord">
+        update trade_record
+        set default_id     = #{default_id},
+            output_elec    = #{output_elec},
+            use_elec       = #{use_elec},
+            trade_state_id = 2
+        where trade_id = #{trade_id};
+    </update>
+</mapper>

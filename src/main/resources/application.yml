@@ -1,0 +1,47 @@
+logging:
+  level:
+    com.blockchainenergy: debug
+    root: info
+    web: trace
+mybatis:
+  mapper-locations: mapper/**/*.xml
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  pageSizeZero: false #表示当 pageSize=0 时返回所有
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 0_bet_C!
+    url: jdbc:mysql://47.104.251.136:3306/newebc
+    username: root
+  redis:
+    host: 47.104.251.136
+    port: 6379
+    password: 0_bet_C!
+    lettuce:
+      pool:
+        #连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        #连接池中的最大空闲连接
+        max-idle: 8
+        #连接池中的最小空闲连接
+        min-idle: 0
+    #连接超时时间（毫秒）
+    timeout: 30000
+  main:
+    allow-bean-definition-overriding: true
+  # 输出时间设置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+sure:
+  token:
+    #        token参数名
+    header-name: Token
+    #       token失效时间 2h
+    expired-time: 7200000
+    #       token中存储用户账号的属性名称
+    calim-userid-name: UserID

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.security.register.dao.RegisterDao">
+    <insert id="insertUser">
+        insert
+        into user(user_id, balance)
+        values (#{user_id}, #{balance})
+    </insert>
+    <insert id="insertUserInfo">
+        insert
+        into user_info(user_id, name, sex, age, address, work_unit, email, phone_number, id_number, elec_meter_id,
+                       user_desc)
+        values (#{user_id}, #{name}, #{sex}, #{age}, #{address}, #{work_unit}, #{email}, #{phone_number}, #{id_number},
+                #{elec_meter_id}, #{user_desc})
+    </insert>
+    <select id="countUser_id" resultType="integer">
+        select count(user_id)
+        from user
+        where user_id = #{publicKeyStr}
+    </select>
+    <select id="checkPhone" resultType="boolean">
+        SELECT IFNULL
+                   ((SELECT true
+                     from user_info
+                     where phone_number = #{phone_number} limit 1),
+            false
+        )
+    </select>
+    <select id="checkIdNumber" resultType="boolean">
+        SELECT IFNULL((SELECT true from user_info where id_number = #{id_number} limit 1),false)
+    </select>
+    <select id="checkMoneyEntry" resultType="boolean">
+        SELECT entry_state
+        FROM system_entry
+        WHERE entry_name = '新用户体验金'
+    </select>
+</mapper>

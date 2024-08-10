@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.trade.tradeInfo.dao.TradeInfoDao">
+    <select id="getTrade" resultType="com.blockchainenergy.trade.tradeInfo.TradeInfo">
+        SELECT *
+        FROM
+        trade_record
+        <where>
+            <if test="default_id!= null and default_id != -1">
+                default_id = #{default_id}
+            </if>
+        </where>
+        order by match_time desc
+    </select>
+    <select id="getTradeDetail" resultType="com.blockchainenergy.trade.tradeInfo.TradeDetail">
+        SELECT *
+        FROM trade_record
+        where trade_id = #{trade_id};
+    </select>
+    <select id="getTradingVolumesByTimePersonByDate" resultType="Integer">
+        SELECT count(*)
+        FROM trade_record
+        <where>
+            time_slot=#{time_slot}
+            and trade_time=#{trade_time}
+            and (buyer=#{user_id} or seller=#{user_id})
+        </where>
+    </select>
+    <select id="getMaxPriceByTimePersonByDate" resultType="Double">
+        SELECT max(price)
+        FROM
+        trade_record
+        <where>
+            time_slot=#{time_slot}
+            and trade_time=#{trade_time}
+            and (buyer=#{user_id} or seller=#{user_id})
+        </where>
+    </select>
+    <select id="getMinPriceByTimePersonByDate" resultType="Double">
+        SELECT min(price)
+        FROM
+        trade_record
+        <where>
+            time_slot=#{time_slot}
+            and trade_time=#{trade_time}
+            and (buyer=#{user_id} or seller=#{user_id})
+        </where>
+    </select>
+    <select id="getAverageByTimePersonByDate" resultType="Double">
+        SELECT avg(price)
+        FROM
+        trade_record
+        <where>
+            time_slot=#{time_slot}
+            and trade_time=#{trade_time}
+            and (buyer=#{user_id} or seller=#{user_id})
+        </where>
+    </select>
+    <select id="getTradeEChartByBuyerID" resultType="com.blockchainenergy.trade.tradeInfo.TradeEChart">
+        select t.contract_elec, t.price, r.price releasePrice
+        from trade_record t
+                 join release_info r
+                      on buyer_release_id = release_id
+        where buyer = #{userId}
+        ORDER BY match_time DESC LIMIT 24
+    </select>
+    <select id="getTradeEChartBySellerID" resultType="com.blockchainenergy.trade.tradeInfo.TradeEChart">
+        select t.contract_elec, t.price, r.price releasePrice
+        from trade_record t
+                 join release_info r
+                      on seller_release_id = release_id
+        where seller = #{userId}
+        ORDER BY match_time DESC LIMIT 24
+    </select>
+    <select id="getMeterIdById" resultType="java.lang.String">
+        select elec_meter_id
+        from user_info
+        where user_id = #{user_id}
+    </select>
+</mapper>

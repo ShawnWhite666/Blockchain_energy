@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockchainenergy.trade.dealmatching.dao.DealingMatchingDao">
+
+    <select id="getTimeSlotInfoByTimeSlot" resultType="com.blockchainenergy.trade.dealmatching.dao.TimeSlotInfoEntity">
+        SELECT time_slot_info.release_id,
+               release_info.user_id,
+               release_time,
+               time_slot,
+               elec_value,
+               elec_upper,
+               elec_lower,
+               trade_type,
+               total_elec,
+               credit_point,
+               price
+        FROM release_info,
+             time_slot_info,
+             user
+        where release_info.date = #{date}
+          and time_slot = #{timeSlot}
+          and release_info.release_id = time_slot_info.release_id
+          and release_info.user_id = user.user_id
+          and credit_point >= 0.5
+          and release_state_id = 0
+    </select>
+
+    <select id="getBuyerHistoryElec" resultType="Double">
+        select sum(contract_elec)
+        from trade_record
+        where trade_record.buyer_release_id = #{release_id}
+          and time_slot &lt; #{time_slot};
+    </select>
+
+    <select id="getSellerHistoryElec" resultType="Double">
+        select sum(contract_elec)
+        from trade_record
+        where trade_record.seller_release_id = #{release_id}
+          and time_slot &lt; #{time_slot};
+    </select>
+
+    <select id="getFutureLower" resultType="Double">
+        select sum(elec_lower)
+        from time_slot_info
+        where release_id = #{release_id}
+          and time_slot &gt; #{time_slot};
+    </select>
+
+    <insert id="insertTradeRecord">
+        insert into trade_record
+        (trade_id,
+         buyer,
+         seller,
+         trade_time,
+         price,
+         contract_elec,
+         time_slot,
+         buyer_release_id,
+         seller_release_id,
+         trade_state_id,
+         match_time,
+         default_id,
+         block_height,
+         block_hash,
+         block_pre_hash)
+        values (#{trade_id},
+                #{buyer},
+                #{seller},
+                #{trade_time},
+                #{price},
+                #{contract_elec},
+                #{time_slot},
+                #{buyer_release_id},
+                #{seller_release_id},
+                1,
+                now(),
+                0,
+                #{block_height},
+                #{block_hash},
+                #{block_pre_hash});
+    </insert>
+
+    <update id="updateReleaseStateToMatched">
+        update release_info
+        set release_state_id = 1
+        where release_id = #{release_id};
+    </update>
+</mapper>
